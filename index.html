@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #0d2137;
+      --bg-card: #162d47;
+      --bg-card-hover: #1a3552;
+      --accent: #00c853;
+      --text: #ffffff;
+      --text-muted: #8ba3bc;
+      --border: #2a4a6a;
+      --num-circle: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header h1::after {
+      content: '';
+      display: inline-block;
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .branding {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .view-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+    }
+
+    .view-toggle a {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .view-toggle a:hover {
+      color: var(--text);
+    }
+
+    .view-toggle a.active {
+      background: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    /* Leadership view: hide all edit/add controls */
+    body.leadership-view .admin-only {
+      display: none !important;
+    }
+
+    body.leadership-view .status-select {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .dashboard {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(0, 200, 83, 0.3);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--num-circle);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 1.25rem 1.5rem;
+      min-height: 140px;
+    }
+
+    .card-body ul {
+      list-style: none;
+    }
+
+    .card-body li {
+      padding: 0.5rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .card-body li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .card-body .empty-state {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .add-item {
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .add-item input {
+      flex: 1;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    .add-item input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    .add-item input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .add-item button {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .add-item button:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Action Items: form with status + notes */
+    .action-item-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .action-item-form .form-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .action-item-form input[type="text"],
+    .action-item-form textarea,
+    .action-item-form select {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    .action-item-form input:focus,
+    .action-item-form textarea:focus,
+    .action-item-form select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .action-item-form .action-input {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .action-item-form select {
+      min-width: 130px;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .action-item-form .status-select-form.status-not-started { background: #37474f; color: #b0bec5; }
+    .action-item-form .status-select-form.status-in-progress { background: #1565c0; color: #e3f2fd; }
+    .action-item-form .status-select-form.status-completed { background: #2e7d32; color: #c8e6c9; }
+    .action-item-form .status-select-form.status-on-hold { background: #f9a825; color: #1a1a1a; }
+    .action-item-form .status-select-form.status-cancelled { background: #c62828; color: #ffcdd2; }
+
+    .action-item-form textarea {
+      width: 100%;
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .action-item-form .add-btn {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .action-item-form .add-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Action item row */
+    .action-item-row {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      list-style: none;
+    }
+
+    .action-item-row::before {
+      display: none;
+    }
+
+    .action-item-row .row-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .action-item-row .row-title {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .action-item-row .row-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .action-item-row .status-select {
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      text-transform: uppercase;
+      transition: opacity 0.2s, filter 0.2s;
+    }
+
+    .action-item-row .status-select:hover {
+      opacity: 0.9;
+    }
+
+    .action-item-row .status-select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    /* Status color themes */
+    .action-item-row .status-select.status-not-started {
+      background: #37474f;
+      color: #b0bec5;
+    }
+    .action-item-row .status-select.status-in-progress {
+      background: #1565c0;
+      color: #e3f2fd;
+    }
+    .action-item-row .status-select.status-completed {
+      background: #2e7d32;
+      color: #c8e6c9;
+    }
+    .action-item-row .status-select.status-on-hold {
+      background: #f9a825;
+      color: #1a1a1a;
+    }
+    .action-item-row .status-select.status-cancelled {
+      background: #c62828;
+      color: #ffcdd2;
+    }
+
+    .action-item-row .btn-remove {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.2em;
+      line-height: 1;
+      padding: 0 0.25rem;
+    }
+
+    .action-item-row .btn-remove:hover {
+      color: #ef5350;
+    }
+
+    .action-item-row .row-notes {
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+
+    .action-item-row .row-notes.empty {
+      display: none;
+    }
+
+    .action-item-row .notes-edit {
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .action-item-row .notes-edit textarea {
+      width: 100%;
+      min-height: 56px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem;
+      color: var(--text);
+      font-size: 0.8rem;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    .action-item-row .notes-edit textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .action-item-row .btn-edit-notes {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding: 0;
+    }
+
+    .action-item-row .btn-edit-notes:hover {
+      text-decoration: underline;
+    }
+
+    /* Delivery Highlights & Challenges */
+    .highlights-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .highlights-form .form-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .highlights-form input,
+    .highlights-form select,
+    .highlights-form textarea {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    .highlights-form input:focus,
+    .highlights-form select:focus,
+    .highlights-form textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .highlights-form .field-team { min-width: 120px; flex: 1; }
+    .highlights-form .field-initiative { min-width: 120px; flex: 1; }
+    .highlights-form .field-eta { min-width: 100px; }
+    .highlights-form .field-key-highlights,
+    .highlights-form .field-raid,
+    .highlights-form .field-challenges {
+      width: 100%;
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    .highlights-form .rag-select {
+      min-width: 90px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .highlights-form .rag-select.rag-red { background: #c62828; color: #ffcdd2; }
+    .highlights-form .rag-select.rag-amber { background: #f9a825; color: #1a1a1a; }
+    .highlights-form .rag-select.rag-green { background: #2e7d32; color: #c8e6c9; }
+
+    .highlights-form .add-btn {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .highlights-form .add-btn:hover { filter: brightness(1.1); }
+
+    .highlight-row {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      list-style: none;
+      border-left: 4px solid var(--border);
+    }
+
+    .highlight-row::before { display: none; }
+
+    .highlight-row.rag-red { border-left-color: #c62828; }
+    .highlight-row.rag-amber { border-left-color: #f9a825; }
+    .highlight-row.rag-green { border-left-color: #2e7d32; }
+
+    .highlight-row .row-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-row .row-team {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .highlight-row .row-initiative {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .highlight-row .row-key-highlights {
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-top: 0.35rem;
+    }
+
+    .highlight-row .row-key-highlights .label {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .highlight-row .row-rag {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .highlight-row .row-rag.rag-red { background: #c62828; color: #ffcdd2; }
+    .highlight-row .row-rag.rag-amber { background: #f9a825; color: #1a1a1a; }
+    .highlight-row .row-rag.rag-green { background: #2e7d32; color: #c8e6c9; }
+
+    .highlight-row .row-meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-row .row-meta span { display: flex; align-items: center; gap: 0.25rem; }
+    .highlight-row .row-meta .label { font-weight: 600; color: var(--text-muted); }
+
+    .highlight-row .row-raid,
+    .highlight-row .row-challenges {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .highlight-row .row-raid .label,
+    .highlight-row .row-challenges .label {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.8rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .highlight-row .btn-remove {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.2em;
+      line-height: 1;
+      padding: 0 0.25rem;
+    }
+
+    .highlight-row .btn-remove:hover { color: #ef5350; }
+
+    /* Nested: Team → Initiatives → Releases */
+    .hl-team-block { margin-bottom: 1.25rem; }
+    .hl-team-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .hl-team-name { font-weight: 700; font-size: 1rem; color: var(--text); }
+    .hl-team-actions .btn-edit, .hl-team-actions .btn-remove { margin-left: 0.25rem; }
+    .hl-initiatives { margin-left: 1rem; margin-top: 0.5rem; }
+    .hl-initiative-block { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; border-left: 4px solid var(--border); }
+    .hl-initiative-block.rag-red { border-left-color: #c62828; }
+    .hl-initiative-block.rag-amber { border-left-color: #f9a825; }
+    .hl-initiative-block.rag-green { border-left-color: #2e7d32; }
+    .hl-initiative-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.35rem; }
+    .hl-initiative-name { font-weight: 600; color: var(--text); font-size: 0.9rem; }
+    .hl-initiative-details { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem; }
+    .hl-releases-list { margin-left: 1rem; margin-top: 0.5rem; }
+    .hl-release-item { font-size: 0.8rem; color: var(--text-muted); padding: 0.25rem 0; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .hl-add-initiative, .hl-add-release { font-size: 0.8rem; margin-top: 0.5rem; }
+    .hl-initiative-form, .hl-release-form { margin-top: 0.5rem; padding: 0.5rem; background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border); }
+    .hl-initiative-form input, .hl-initiative-form select, .hl-initiative-form textarea,
+    .hl-release-form input { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem; color: var(--text); font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 0.35rem; }
+    .hl-initiative-form textarea, .hl-release-form { display: block; }
+    .hl-form-actions { margin-top: 0.35rem; }
+
+    /* Upcoming Releases */
+    .releases-form .form-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .releases-form input,
+    .releases-form select {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    .releases-form input:focus,
+    .releases-form select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .releases-form .field-release-name { min-width: 140px; flex: 1; }
+    .releases-form .field-release-date { min-width: 110px; }
+    .releases-form .field-opco { min-width: 100px; flex: 1; }
+    .releases-form .release-status-select { min-width: 120px; }
+    .releases-form .add-btn {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .releases-form .add-btn:hover { filter: brightness(1.1); }
+
+    .release-row {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      list-style: none;
+    }
+    .release-row::before { display: none; }
+    .release-row .row-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .release-row .row-name { font-weight: 600; color: var(--text); font-size: 0.95rem; }
+    .release-row .row-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .release-row .release-status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .release-row .release-status-badge.planned { background: #37474f; color: #b0bec5; }
+    .release-row .release-status-badge.in-progress { background: #1565c0; color: #e3f2fd; }
+    .release-row .release-status-badge.released { background: #2e7d32; color: #c8e6c9; }
+    .release-row .release-status-badge.deferred { background: #c62828; color: #ffcdd2; }
+    .release-row .btn-remove {
+      background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2em; line-height: 1; padding: 0 0.25rem;
+    }
+    .release-row .btn-remove:hover { color: #ef5350; }
+    .release-row .btn-edit { margin-left: 0.25rem; }
+    .release-row .release-edit-form { display: none; margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border); }
+    .release-row .release-edit-form.show { display: block; }
+    .release-row .release-edit-form input,
+    .release-row .release-edit-form select { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; color: var(--text); font-size: 0.875rem; margin-right: 0.5rem; margin-bottom: 0.5rem; }
+    .release-row .release-edit-form .form-actions { margin-top: 0.5rem; }
+
+    /* Releases list view (compact list styling) */
+    .card[data-section="releases"] [data-list] {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .card[data-section="releases"] [data-list].release-list-view .release-row {
+      padding: 0.6rem 1rem;
+      margin-bottom: 0;
+    }
+    .card[data-section="releases"] [data-list].release-list-view .release-row .row-head {
+      margin-bottom: 0.15rem;
+    }
+    .card[data-section="releases"] [data-list].release-list-view .release-row .row-meta {
+      margin-top: 0.2rem;
+    }
+
+    /* Link list items (product plan, resource dashboard) */
+    .card-body .list-item-link {
+      display: block;
+      padding: 0.5rem 0 0.5rem 1.25rem;
+      position: relative;
+      color: var(--accent);
+      font-size: 0.9rem;
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .card-body .list-item-link::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+    .card-body .list-item-link:hover {
+      text-decoration: underline;
+    }
+    .card-body .list-item-link-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .card-body .list-item-link-wrap .admin-only { flex-shrink: 0; }
+    .card-body li.list-item-has-link::before { display: none; }
+    .card-body li.list-item-has-link { padding-left: 0; }
+
+    .btn-edit {
+      background: none; border: none; color: var(--accent); cursor: pointer; font-size: 0.75rem; padding: 0 0.25rem;
+    }
+    .btn-edit:hover { text-decoration: underline; }
+    .inline-edit-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 0.25rem; }
+    .inline-edit-wrap input { flex: 1; min-width: 120px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; color: var(--text); font-size: 0.875rem; }
+    .inline-edit-wrap input:focus { outline: none; border-color: var(--accent); }
+    .inline-edit-wrap .btn-save { background: var(--accent); color: var(--bg-primary); border: none; border-radius: 6px; padding: 0.35rem 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .inline-edit-wrap .btn-cancel { background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.75rem; font-size: 0.8rem; cursor: pointer; }
+
+    /* Leadership view alignment */
+    body.leadership-view .header {
+      align-items: center;
+    }
+    body.leadership-view .card-body {
+      min-height: 120px;
+    }
+    body.leadership-view .card-body ul {
+      padding-left: 0;
+      margin: 0;
+    }
+    body.leadership-view .card-body li {
+      padding-left: 1.25rem;
+      align-items: center;
+    }
+    body.leadership-view .card-body li.list-item-has-link {
+      padding-left: 0;
+    }
+    body.leadership-view .list-item-link-wrap {
+      align-items: center;
+    }
+    body.leadership-view .release-row .row-meta {
+      align-items: center;
+    }
+    body.leadership-view .release-row .row-head {
+      align-items: center;
+    }
+
+    .footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border);
+      text-align: right;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .header, .dashboard {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Delivery Dashboard</h1>
+    <div class="view-toggle">
+      <a href="#" data-view="admin" id="view-admin">Admin Portal</a>
+      <a href="#" data-view="leadership" id="view-leadership">Leadership View</a>
+    </div>
+    <span class="branding">Sysco | Technology — Proprietary &amp; Confidential</span>
+  </header>
+
+  <main class="dashboard">
+    <div class="grid">
+      <section class="card" data-section="action-items" data-action-items="true">
+        <div class="card-header">
+          <span class="card-num">01</span>
+          <h2 class="card-title">Action Items &amp; Followups</h2>
+        </div>
+        <div class="card-body">
+          <ul data-list></ul>
+          <p class="empty-state" data-empty>No action items yet. Add one below.</p>
+          <div class="action-item-form admin-only" data-action-form>
+            <div class="form-row">
+              <input type="text" class="action-input" placeholder="Action item..." data-action-input />
+              <select class="status-select-form status-not-started" data-action-status>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <button type="button" class="add-btn" data-action-add>Add</button>
+            </div>
+            <div class="form-row">
+              <textarea placeholder="Notes / comments (optional)..." data-action-notes></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-section="highlights" data-highlights="true">
+        <div class="card-header">
+          <span class="card-num">02</span>
+          <h2 class="card-title">Delivery Highlights &amp; Challenges</h2>
+        </div>
+        <div class="card-body">
+          <ul data-list></ul>
+          <p class="empty-state" data-empty>No teams yet. Add a team below.</p>
+          <div class="admin-only" style="margin-top:0.75rem;">
+            <div class="form-row">
+              <input type="text" class="field-team" placeholder="Team name" data-hl-team style="max-width:200px;" />
+              <button type="button" class="add-btn" data-hl-add-team>Add Team</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-section="product-plan">
+        <div class="card-header">
+          <span class="card-num">03</span>
+          <h2 class="card-title">Review Product Plan</h2>
+        </div>
+        <div class="card-body">
+          <ul data-list></ul>
+          <p class="empty-state" data-empty>No product plan links yet.</p>
+          <div class="add-item admin-only">
+            <input type="text" placeholder="Paste product plan link (URL)..." data-input />
+            <button type="button" data-add>Add</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-section="resource-dashboard">
+        <div class="card-header">
+          <span class="card-num">04</span>
+          <h2 class="card-title">Review Resource Dashboard</h2>
+        </div>
+        <div class="card-body">
+          <ul data-list></ul>
+          <p class="empty-state" data-empty>No resource dashboard links yet.</p>
+          <div class="add-item admin-only">
+            <input type="text" placeholder="Paste resource dashboard link (URL)..." data-input />
+            <button type="button" data-add>Add</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-section="learnings">
+        <div class="card-header">
+          <span class="card-num">05</span>
+          <h2 class="card-title">New Learnings / Improvements</h2>
+        </div>
+        <div class="card-body">
+          <ul data-list></ul>
+          <p class="empty-state" data-empty>No learnings or improvements yet.</p>
+          <div class="add-item admin-only">
+            <input type="text" placeholder="Add learning or improvement..." data-input />
+            <button type="button" data-add>Add</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-section="releases" data-releases="true">
+        <div class="card-header">
+          <span class="card-num">06</span>
+          <h2 class="card-title">Upcoming Releases</h2>
+        </div>
+        <div class="card-body">
+          <ul data-list></ul>
+          <p class="empty-state" data-empty>No upcoming releases yet. Add one below.</p>
+          <div class="releases-form admin-only" data-releases-form>
+            <div class="form-row">
+              <input type="text" class="field-release-name" placeholder="Release name" data-rel-name />
+              <input type="text" class="field-release-date" placeholder="Release date" data-rel-date />
+              <input type="text" class="field-opco" placeholder="Release OpCo" data-rel-opco />
+              <select class="release-status-select" data-rel-status>
+                <option value="Planned">Planned</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Released">Released</option>
+                <option value="Deferred">Deferred</option>
+              </select>
+              <button type="button" class="add-btn" data-rel-add>Add</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Sysco | Technology — Proprietary &amp; Confidential
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'delivery-dashboard-data';
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    const ACTION_STATUSES = ['Not Started', 'In Progress', 'Completed', 'On Hold', 'Cancelled'];
+
+    function statusClass(status) {
+      if (!status) return 'status-not-started';
+      const s = (status || '').toLowerCase().replace(/\s+/g, '-');
+      if (s === 'not-started') return 'status-not-started';
+      if (s === 'in-progress') return 'status-in-progress';
+      if (s === 'completed') return 'status-completed';
+      if (s === 'on-hold') return 'status-on-hold';
+      if (s === 'cancelled') return 'status-cancelled';
+      return 'status-not-started';
+    }
+
+    function ragClass(rag) {
+      const r = (rag || 'Green').toLowerCase();
+      if (r === 'red') return 'rag-red';
+      if (r === 'amber') return 'rag-amber';
+      return 'rag-green';
+    }
+
+    function releaseStatusClass(status) {
+      const s = (status || 'Planned').toLowerCase().replace(/\s+/g, '-');
+      if (s === 'in-progress') return 'in-progress';
+      if (s === 'released') return 'released';
+      if (s === 'deferred') return 'deferred';
+      return 'planned';
+    }
+
+    function getSectionKey(card) {
+      return card.getAttribute('data-section');
+    }
+
+    function normalizeActionItems(items) {
+      return (items || []).map(item =>
+        typeof item === 'string'
+          ? { text: item, status: 'Not Started', notes: '' }
+          : { text: item.text || '', status: item.status || 'Not Started', notes: item.notes || '' }
+      );
+    }
+
+    function normalizeHighlightItems(items) {
+      return (items || []).map(item => {
+        if (typeof item === 'string') return { teamName: item, initiative: '', keyHighlights: '', rag: 'Green', eta: '', raid: '', challenges: '' };
+        return {
+          teamName: item.teamName || '',
+          initiative: item.initiative || '',
+          keyHighlights: item.keyHighlights || '',
+          rag: item.rag || 'Green',
+          eta: item.eta || '',
+          raid: item.raid || '',
+          challenges: item.challenges || ''
+        };
+      });
+    }
+
+    function normalizeHighlightTeams(items) {
+      if (!items || !Array.isArray(items)) return [];
+      const first = items[0];
+      if (!first) return [];
+      if (first.initiatives && Array.isArray(first.initiatives)) return items;
+      return items.map(old => ({
+        teamName: (old.teamName || (typeof old === 'string' ? old : '')).toString(),
+        initiatives: [{
+          name: old.initiative || 'Initiative',
+          keyHighlights: old.keyHighlights || '',
+          rag: old.rag || 'Green',
+          eta: old.eta || '',
+          raid: old.raid || '',
+          challenges: old.challenges || '',
+          releases: []
+        }]
+      }));
+    }
+
+    function normalizeReleaseItems(items) {
+      return (items || []).map(item => ({
+        releaseName: item.releaseName || '',
+        releaseDate: item.releaseDate || '',
+        releaseOpCo: item.releaseOpCo || '',
+        releaseStatus: item.releaseStatus || 'Planned'
+      }));
+    }
+
+    function renderReleasesList(card, items) {
+      const list = card.querySelector('[data-list]');
+      const empty = card.querySelector('[data-empty]');
+      list.innerHTML = '';
+      list.classList.add('release-list-view');
+      const normalized = normalizeReleaseItems(items);
+      if (normalized.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      const key = getSectionKey(card);
+      normalized.forEach((item, i) => {
+        const statusClassVal = releaseStatusClass(item.releaseStatus);
+        const li = document.createElement('li');
+        li.className = 'release-row';
+        li.innerHTML = `
+          <div class="row-head">
+            <span class="row-name">${escapeHtml(item.releaseName)}</span>
+            <div>
+              <button type="button" class="btn-edit admin-only" data-release-edit>Edit</button>
+              <button type="button" class="btn-remove admin-only" data-item-index="${i}" aria-label="Remove">×</button>
+            </div>
+          </div>
+          <div class="row-meta">
+            <span><strong>Date:</strong> ${escapeHtml(item.releaseDate)}</span>
+            <span><strong>OpCo:</strong> ${escapeHtml(item.releaseOpCo)}</span>
+            <span><strong>Status:</strong> <span class="release-status-badge ${statusClassVal}">${escapeHtml(item.releaseStatus)}</span></span>
+          </div>
+          <div class="release-edit-form admin-only" data-release-edit-form>
+            <input type="text" data-rel-name-edit placeholder="Release name" value="${escapeHtml(item.releaseName)}" />
+            <input type="text" data-rel-date-edit placeholder="Release date" value="${escapeHtml(item.releaseDate)}" />
+            <input type="text" data-rel-opco-edit placeholder="OpCo" value="${escapeHtml(item.releaseOpCo)}" />
+            <select data-rel-status-edit>
+              <option value="Planned" ${item.releaseStatus === 'Planned' ? 'selected' : ''}>Planned</option>
+              <option value="In Progress" ${item.releaseStatus === 'In Progress' ? 'selected' : ''}>In Progress</option>
+              <option value="Released" ${item.releaseStatus === 'Released' ? 'selected' : ''}>Released</option>
+              <option value="Deferred" ${item.releaseStatus === 'Deferred' ? 'selected' : ''}>Deferred</option>
+            </select>
+            <div class="form-actions">
+              <button type="button" class="btn-save" data-release-save>Save</button>
+              <button type="button" class="btn-cancel" data-release-cancel>Cancel</button>
+            </div>
+          </div>
+        `;
+        const rowHead = li.querySelector('.row-head');
+        const editBtn = li.querySelector('[data-release-edit]');
+        const editForm = li.querySelector('[data-release-edit-form]');
+        editBtn.addEventListener('click', () => { editForm.classList.add('show'); });
+        li.querySelector('[data-release-cancel]').addEventListener('click', () => { editForm.classList.remove('show'); });
+        li.querySelector('[data-release-save]').addEventListener('click', () => {
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          const list = normalizeReleaseItems(data[key]);
+          const nameVal = (li.querySelector('[data-rel-name-edit]').value || '').trim();
+          if (nameVal && list[i]) {
+            list[i].releaseName = nameVal;
+            list[i].releaseDate = (li.querySelector('[data-rel-date-edit]').value || '').trim();
+            list[i].releaseOpCo = (li.querySelector('[data-rel-opco-edit]').value || '').trim();
+            list[i].releaseStatus = li.querySelector('[data-rel-status-edit]').value;
+            data[key] = list;
+            saveData(data);
+            renderReleasesList(card, list);
+          }
+        });
+        li.querySelector('.btn-remove').addEventListener('click', () => {
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          data[key] = normalizeReleaseItems(data[key]).filter((_, j) => j !== i);
+          saveData(data);
+          renderReleasesList(card, data[key]);
+        });
+        list.appendChild(li);
+      });
+    }
+
+    function renderHighlightsList(card, items) {
+      const list = card.querySelector('[data-list]');
+      const empty = card.querySelector('[data-empty]');
+      list.innerHTML = '';
+      const normalized = normalizeHighlightTeams(items);
+      if (normalized.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      const key = getSectionKey(card);
+      normalized.forEach((team, ti) => {
+        const teamDiv = document.createElement('div');
+        teamDiv.className = 'hl-team-block';
+        let inner = '<div class="hl-team-header"><span class="hl-team-name">' + escapeHtml(team.teamName) + '</span><span class="hl-team-actions admin-only"><button type="button" class="btn-edit" data-team-edit>Edit</button><button type="button" class="btn-remove" data-team-remove>×</button></span></div>';
+        (team.initiatives || []).forEach((init, ii) => {
+          const ragCls = ragClass(init.rag);
+          inner += '<div class="hl-initiatives"><div class="hl-initiative-block ' + ragCls + '" data-ti="' + ti + '" data-ii="' + ii + '"><div class="hl-initiative-header"><span class="hl-initiative-name">' + escapeHtml(init.name) + '</span><span class="admin-only"><span class="row-rag ' + ragClass(init.rag) + '">' + escapeHtml(init.rag) + '</span><button type="button" class="btn-edit" data-init-edit>Edit</button><button type="button" class="btn-remove" data-init-remove>×</button></span></div>';
+          if (init.keyHighlights) inner += '<div class="hl-initiative-details"><strong>Key highlights:</strong> ' + escapeHtml(init.keyHighlights) + '</div>';
+          if (init.eta) inner += '<div class="hl-initiative-details"><strong>ETA:</strong> ' + escapeHtml(init.eta) + '</div>';
+          if (init.raid) inner += '<div class="hl-initiative-details"><strong>RAID:</strong> ' + escapeHtml(init.raid) + '</div>';
+          if (init.challenges) inner += '<div class="hl-initiative-details"><strong>Challenges:</strong> ' + escapeHtml(init.challenges) + '</div>';
+          inner += '<div class="hl-releases-list">';
+          (init.releases || []).forEach((r, ri) => {
+            inner += '<div class="hl-release-item"><span>' + escapeHtml(r.releaseName || '') + (r.releaseDate ? ' (' + escapeHtml(r.releaseDate) + ')' : '') + '</span><span class="admin-only"><button type="button" class="btn-edit" data-rel-edit data-ri="' + ri + '">Edit</button><button type="button" class="btn-remove" data-rel-remove data-ri="' + ri + '">×</button></span></div>';
+          });
+          inner += '<div class="hl-add-release admin-only"><button type="button" class="btn-edit" data-add-release>+ Add Release</button></div></div></div></div>';
+        });
+        inner += '<div class="hl-add-initiative admin-only" style="margin-top:0.5rem;"><button type="button" class="btn-edit" data-add-initiative-first>+ Add Initiative</button></div>';
+        teamDiv.innerHTML = inner;
+
+        teamDiv.querySelector('[data-team-remove]').addEventListener('click', () => {
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          data[key] = normalizeHighlightTeams(data[key]).filter((_, j) => j !== ti);
+          saveData(data);
+          renderHighlightsList(card, data[key]);
+        });
+        teamDiv.querySelector('[data-team-edit]').addEventListener('click', () => {
+          const newName = prompt('Team name:', team.teamName);
+          if (newName != null && newName.trim()) {
+            const data = loadData();
+            const t = normalizeHighlightTeams(data[key] || []);
+            if (t[ti]) t[ti].teamName = newName.trim();
+            data[key] = t;
+            saveData(data);
+            renderHighlightsList(card, t);
+          }
+        });
+        teamDiv.querySelector('[data-add-initiative-first]').addEventListener('click', () => {
+          const data = loadData();
+          let t = normalizeHighlightTeams(data[key] || []);
+          if (!t[ti]) t[ti] = { teamName: team.teamName, initiatives: [] };
+          if (!t[ti].initiatives) t[ti].initiatives = [];
+          t[ti].initiatives.push({ name: 'New Initiative', keyHighlights: '', rag: 'Green', eta: '', raid: '', challenges: '', releases: [] });
+          data[key] = t;
+          saveData(data);
+          renderHighlightsList(card, t);
+        });
+        teamDiv.querySelectorAll('[data-init-remove]').forEach(rmBtn => {
+          const initBlock = rmBtn.closest('.hl-initiative-block');
+          const ii = parseInt(initBlock.getAttribute('data-ii'), 10);
+          rmBtn.addEventListener('click', () => {
+            const data = loadData();
+            let t = normalizeHighlightTeams(data[key] || []);
+            if (t[ti] && t[ti].initiatives) t[ti].initiatives = t[ti].initiatives.filter((_, j) => j !== ii);
+            data[key] = t;
+            saveData(data);
+            renderHighlightsList(card, t);
+          });
+        });
+        teamDiv.querySelectorAll('[data-init-edit]').forEach(editBtn => {
+          const initBlock = editBtn.closest('.hl-initiative-block');
+          const ii = parseInt(initBlock.getAttribute('data-ii'), 10);
+          editBtn.addEventListener('click', () => {
+            const init = normalized[ti].initiatives[ii];
+            const form = document.createElement('div');
+            form.className = 'hl-initiative-form';
+            form.innerHTML = '<input type="text" data-f-name placeholder="Initiative name" value="' + escapeHtml(init.name) + '" style="width:100%;margin-bottom:6px;" /><textarea data-f-key placeholder="Key highlights" rows="2" style="width:100%;margin-bottom:6px;">' + escapeHtml(init.keyHighlights) + '</textarea><select data-f-rag><option value="Green"' + (init.rag === 'Green' ? ' selected' : '') + '>Green</option><option value="Amber"' + (init.rag === 'Amber' ? ' selected' : '') + '>Amber</option><option value="Red"' + (init.rag === 'Red' ? ' selected' : '') + '>Red</option></select><input type="text" data-f-eta placeholder="ETA" value="' + escapeHtml(init.eta) + '" /><textarea data-f-raid placeholder="RAID" rows="2" style="width:100%;margin:6px 0;">' + escapeHtml(init.raid) + '</textarea><textarea data-f-challenges placeholder="Challenges" rows="2" style="width:100%;margin-bottom:6px;">' + escapeHtml(init.challenges) + '</textarea><div class="hl-form-actions"><button type="button" class="btn-save" data-init-save>Save</button><button type="button" class="btn-cancel" data-init-cancel>Cancel</button></div>';
+            initBlock.appendChild(form);
+            form.querySelector('[data-init-save]').addEventListener('click', () => {
+              const data = loadData();
+              let t = normalizeHighlightTeams(data[key] || []);
+              if (t[ti] && t[ti].initiatives[ii]) {
+                t[ti].initiatives[ii] = { name: (form.querySelector('[data-f-name]').value || '').trim() || init.name, keyHighlights: (form.querySelector('[data-f-key]').value || '').trim(), rag: form.querySelector('[data-f-rag]').value, eta: (form.querySelector('[data-f-eta]').value || '').trim(), raid: (form.querySelector('[data-f-raid]').value || '').trim(), challenges: (form.querySelector('[data-f-challenges]').value || '').trim(), releases: t[ti].initiatives[ii].releases || [] };
+              }
+              data[key] = t;
+              saveData(data);
+              renderHighlightsList(card, t);
+            });
+            form.querySelector('[data-init-cancel]').addEventListener('click', () => { form.remove(); });
+          });
+        });
+        teamDiv.querySelectorAll('[data-add-release]').forEach(btn => {
+          const initBlock = btn.closest('.hl-initiative-block');
+          const ii = parseInt(initBlock.getAttribute('data-ii'), 10);
+          btn.addEventListener('click', () => {
+            const data = loadData();
+            let t = normalizeHighlightTeams(data[key] || []);
+            if (!t[ti].initiatives[ii].releases) t[ti].initiatives[ii].releases = [];
+            t[ti].initiatives[ii].releases.push({ releaseName: 'New Release', releaseDate: '' });
+            data[key] = t;
+            saveData(data);
+            renderHighlightsList(card, t);
+          });
+        });
+        teamDiv.querySelectorAll('[data-rel-remove]').forEach(rmBtn => {
+          const ri = parseInt(rmBtn.getAttribute('data-ri'), 10);
+          const initBlock = rmBtn.closest('.hl-initiative-block');
+          const ii = parseInt(initBlock.getAttribute('data-ii'), 10);
+          rmBtn.addEventListener('click', () => {
+            const data = loadData();
+            let t = normalizeHighlightTeams(data[key] || []);
+            if (t[ti] && t[ti].initiatives[ii] && t[ti].initiatives[ii].releases) t[ti].initiatives[ii].releases = t[ti].initiatives[ii].releases.filter((_, j) => j !== ri);
+            data[key] = t;
+            saveData(data);
+            renderHighlightsList(card, t);
+          });
+        });
+        teamDiv.querySelectorAll('[data-rel-edit]').forEach(editBtn => {
+          const ri = parseInt(editBtn.getAttribute('data-ri'), 10);
+          const initBlock = editBtn.closest('.hl-initiative-block');
+          const ii = parseInt(initBlock.getAttribute('data-ii'), 10);
+          editBtn.addEventListener('click', () => {
+            const r = normalized[ti].initiatives[ii].releases[ri];
+            const newName = prompt('Release name:', r.releaseName || '');
+            const newDate = prompt('Release date:', r.releaseDate || '');
+            if (newName != null || newDate != null) {
+              const data = loadData();
+              let t = normalizeHighlightTeams(data[key] || []);
+              if (t[ti] && t[ti].initiatives[ii] && t[ti].initiatives[ii].releases[ri]) {
+                if (newName != null) t[ti].initiatives[ii].releases[ri].releaseName = (newName || '').trim();
+                if (newDate != null) t[ti].initiatives[ii].releases[ri].releaseDate = (newDate || '').trim();
+              }
+              data[key] = t;
+              saveData(data);
+              renderHighlightsList(card, t);
+            }
+          });
+        });
+        const li = document.createElement('li');
+        li.style.listStyle = 'none';
+        li.appendChild(teamDiv);
+        list.appendChild(li);
+      });
+    }
+
+    function renderActionItemsList(card, items) {
+      const list = card.querySelector('[data-list]');
+      const empty = card.querySelector('[data-empty]');
+      list.innerHTML = '';
+      const normalized = normalizeActionItems(items);
+      if (normalized.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      const key = getSectionKey(card);
+      normalized.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.className = 'action-item-row';
+        const statusClassVal = statusClass(item.status);
+        li.innerHTML = `
+          <div class="row-top">
+            <span class="row-title">${escapeHtml(item.text)}</span>
+            <button type="button" class="btn-edit admin-only" data-edit-title style="margin-left:4px;">Edit</button>
+            <div class="row-meta">
+              <select class="status-select ${statusClass(item.status)}" data-item-index="${i}" data-field="status">
+                ${ACTION_STATUSES.map(s => `<option value="${escapeHtml(s)}" ${s === item.status ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}
+              </select>
+              <button type="button" class="btn-remove admin-only" data-item-index="${i}" aria-label="Remove">×</button>
+            </div>
+          </div>
+          <div class="inline-edit-wrap admin-only" data-title-edit style="display:none;">
+            <input type="text" data-title-input placeholder="Action item..." />
+            <button type="button" class="btn-save" data-title-save>Save</button>
+            <button type="button" class="btn-cancel" data-title-cancel>Cancel</button>
+          </div>
+          <div class="row-notes ${item.notes ? '' : 'empty'}">${item.notes ? escapeHtml(item.notes) : ''}</div>
+          <div class="notes-edit admin-only" style="display:none;">
+            <textarea data-notes-edit placeholder="Notes / comments...">${escapeHtml(item.notes)}</textarea>
+            <button type="button" class="btn-edit-notes" data-notes-save>Save notes</button>
+          </div>
+          <button type="button" class="btn-edit-notes admin-only" data-notes-toggle>${item.notes ? 'Edit notes' : 'Add notes'}</button>
+        `;
+        const statusSelect = li.querySelector('.status-select');
+        const notesDiv = li.querySelector('.row-notes');
+        const notesEditDiv = li.querySelector('.notes-edit');
+        const notesToggleBtn = li.querySelector('[data-notes-toggle]');
+        const notesTextarea = li.querySelector('[data-notes-edit]');
+        const notesSaveBtn = li.querySelector('[data-notes-save]');
+
+        function showNotesView(editing) {
+          notesDiv.style.display = editing ? 'none' : 'block';
+          notesEditDiv.style.display = editing ? 'block' : 'none';
+          notesToggleBtn.style.display = editing ? 'none' : 'block';
+          if (editing) notesTextarea.focus();
+        }
+
+        notesToggleBtn.addEventListener('click', () => showNotesView(true));
+        notesSaveBtn.addEventListener('click', () => {
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          const list = normalizeActionItems(data[key]);
+          if (list[i]) list[i].notes = notesTextarea.value.trim();
+          data[key] = list;
+          saveData(data);
+          notesDiv.textContent = list[i].notes;
+          notesDiv.classList.toggle('empty', !list[i].notes);
+          showNotesView(false);
+          notesToggleBtn.textContent = list[i].notes ? 'Edit notes' : 'Add notes';
+        });
+
+        const titleSpan = li.querySelector('.row-title');
+        const editTitleBtn = li.querySelector('[data-edit-title]');
+        const titleEditWrap = li.querySelector('[data-title-edit]');
+        const titleInput = li.querySelector('[data-title-input]');
+        const titleSaveBtn = li.querySelector('[data-title-save]');
+        const titleCancelBtn = li.querySelector('[data-title-cancel]');
+        if (editTitleBtn && titleEditWrap) {
+          editTitleBtn.addEventListener('click', () => {
+            li.querySelector('.row-top').style.display = 'none';
+            titleEditWrap.style.display = 'flex';
+            titleInput.value = item.text;
+            titleInput.focus();
+          });
+          titleSaveBtn.addEventListener('click', () => {
+            const val = titleInput.value.trim();
+            if (val) {
+              const data = loadData();
+              if (!data[key]) data[key] = [];
+              const list = normalizeActionItems(data[key]);
+              if (list[i]) list[i].text = val;
+              data[key] = list;
+              saveData(data);
+              renderActionItemsList(card, list);
+            }
+          });
+          titleCancelBtn.addEventListener('click', () => {
+            li.querySelector('.row-top').style.display = '';
+            titleEditWrap.style.display = 'none';
+          });
+        }
+
+        statusSelect.addEventListener('change', () => {
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          const list = normalizeActionItems(data[key]);
+          if (list[i]) list[i].status = statusSelect.value;
+          data[key] = list;
+          saveData(data);
+          notesDiv.classList.toggle('empty', !list[i].notes);
+          statusSelect.className = 'status-select ' + statusClass(statusSelect.value);
+        });
+        li.querySelector('.btn-remove').addEventListener('click', () => {
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          data[key] = normalizeActionItems(data[key]).filter((_, j) => j !== i);
+          saveData(data);
+          renderActionItemsList(card, data[key]);
+        });
+        list.appendChild(li);
+      });
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function renderList(card, items) {
+      if (card.getAttribute('data-action-items') === 'true') {
+        renderActionItemsList(card, items);
+        return;
+      }
+      if (card.getAttribute('data-highlights') === 'true') {
+        renderHighlightsList(card, items);
+        return;
+      }
+      if (card.getAttribute('data-releases') === 'true') {
+        renderReleasesList(card, items);
+        return;
+      }
+      const list = card.querySelector('[data-list]');
+      const empty = card.querySelector('[data-empty]');
+      list.innerHTML = '';
+      const key = getSectionKey(card);
+      const isLinkSection = key === 'product-plan' || key === 'resource-dashboard';
+      if (items.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      items.forEach((text, i) => {
+        const li = document.createElement('li');
+        if (isLinkSection && text) {
+          li.classList.add('list-item-has-link');
+          const href = /^https?:\/\//i.test(text) ? text : 'https://' + text;
+          const displayText = text.length > 60 ? text.slice(0, 57) + '…' : text;
+          const wrap = document.createElement('div');
+          wrap.className = 'list-item-link-wrap list-item-view';
+          const a = document.createElement('a');
+          a.className = 'list-item-link';
+          a.href = href;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = displayText;
+          wrap.appendChild(a);
+          const editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'btn-edit admin-only';
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => {
+            wrap.style.display = 'none';
+            editWrap.style.display = 'flex';
+            input.value = text;
+            input.focus();
+          });
+          wrap.appendChild(editBtn);
+          const rm = document.createElement('button');
+          rm.textContent = '×';
+          rm.type = 'button';
+          rm.className = 'admin-only';
+          rm.style.cssText = 'background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2em;line-height:1;padding:0';
+          rm.addEventListener('click', () => {
+            const data = loadData();
+            if (!data[key]) data[key] = [];
+            data[key] = data[key].filter((_, j) => j !== i);
+            saveData(data);
+            renderList(card, data[key]);
+          });
+          wrap.appendChild(rm);
+          li.appendChild(wrap);
+          const editWrap = document.createElement('div');
+          editWrap.className = 'inline-edit-wrap admin-only';
+          editWrap.style.display = 'none';
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.placeholder = isLinkSection ? 'Paste URL...' : 'Enter text...';
+          const saveBtn = document.createElement('button');
+          saveBtn.type = 'button';
+          saveBtn.className = 'btn-save';
+          saveBtn.textContent = 'Save';
+          const cancelBtn = document.createElement('button');
+          cancelBtn.type = 'button';
+          cancelBtn.className = 'btn-cancel';
+          cancelBtn.textContent = 'Cancel';
+          saveBtn.addEventListener('click', () => {
+            const val = input.value.trim();
+            if (val) {
+              const data = loadData();
+              if (!data[key]) data[key] = [];
+              data[key][i] = val;
+              saveData(data);
+              renderList(card, data[key]);
+            }
+          });
+          cancelBtn.addEventListener('click', () => { wrap.style.display = 'flex'; editWrap.style.display = 'none'; });
+          editWrap.appendChild(input);
+          editWrap.appendChild(saveBtn);
+          editWrap.appendChild(cancelBtn);
+          li.appendChild(editWrap);
+        } else {
+          const viewDiv = document.createElement('div');
+          viewDiv.className = 'list-item-view';
+          viewDiv.style.display = 'flex';
+          viewDiv.style.alignItems = 'center';
+          viewDiv.style.gap = '0.5rem';
+          viewDiv.style.flexWrap = 'wrap';
+          viewDiv.textContent = text;
+          const editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'btn-edit admin-only';
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => {
+            viewDiv.style.display = 'none';
+            editWrap.style.display = 'flex';
+            input.value = text;
+            input.focus();
+          });
+          viewDiv.appendChild(editBtn);
+          const rm = document.createElement('button');
+          rm.textContent = '×';
+          rm.type = 'button';
+          rm.className = 'admin-only';
+          rm.style.cssText = 'background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2em;line-height:1;padding:0';
+          rm.addEventListener('click', () => {
+            const data = loadData();
+            if (!data[key]) data[key] = [];
+            data[key] = data[key].filter((_, j) => j !== i);
+            saveData(data);
+            renderList(card, data[key]);
+          });
+          viewDiv.appendChild(rm);
+          li.appendChild(viewDiv);
+          const editWrap = document.createElement('div');
+          editWrap.className = 'inline-edit-wrap admin-only';
+          editWrap.style.display = 'none';
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.placeholder = 'Enter text...';
+          const saveBtn = document.createElement('button');
+          saveBtn.type = 'button';
+          saveBtn.className = 'btn-save';
+          saveBtn.textContent = 'Save';
+          const cancelBtn = document.createElement('button');
+          cancelBtn.type = 'button';
+          cancelBtn.className = 'btn-cancel';
+          cancelBtn.textContent = 'Cancel';
+          saveBtn.addEventListener('click', () => {
+            const val = input.value.trim();
+            if (val) {
+              const data = loadData();
+              if (!data[key]) data[key] = [];
+              data[key][i] = val;
+              saveData(data);
+              renderList(card, data[key]);
+            }
+          });
+          cancelBtn.addEventListener('click', () => { viewDiv.style.display = 'flex'; editWrap.style.display = 'none'; });
+          editWrap.appendChild(input);
+          editWrap.appendChild(saveBtn);
+          editWrap.appendChild(cancelBtn);
+          li.appendChild(editWrap);
+        }
+        list.appendChild(li);
+      });
+    }
+
+    function initCard(card) {
+      const key = getSectionKey(card);
+      const data = loadData();
+      let items = data[key] || [];
+
+      if (card.getAttribute('data-action-items') === 'true') {
+        items = normalizeActionItems(items);
+        if (items.length > 0) data[key] = items;
+        saveData(data);
+        renderList(card, items);
+
+        const actionInput = card.querySelector('[data-action-input]');
+        const statusSelect = card.querySelector('[data-action-status]');
+        const notesInput = card.querySelector('[data-action-notes]');
+        const addBtn = card.querySelector('[data-action-add]');
+
+        statusSelect.addEventListener('change', () => {
+          statusSelect.className = 'status-select-form ' + statusClass(statusSelect.value);
+        });
+
+        function addActionItem() {
+          const text = (actionInput.value || '').trim();
+          if (!text) return;
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          const list = normalizeActionItems(data[key]);
+          list.push({
+            text,
+            status: statusSelect.value,
+            notes: (notesInput.value || '').trim()
+          });
+          data[key] = list;
+          saveData(data);
+          renderList(card, list);
+          actionInput.value = '';
+          notesInput.value = '';
+        }
+
+        addBtn.addEventListener('click', addActionItem);
+        actionInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addActionItem(); });
+        return;
+      }
+
+      if (card.getAttribute('data-highlights') === 'true') {
+        items = normalizeHighlightTeams(items);
+        if (items.length > 0) data[key] = items;
+        saveData(data);
+        renderList(card, items);
+
+        const teamInput = card.querySelector('[data-hl-team]');
+        const addTeamBtn = card.querySelector('[data-hl-add-team]');
+
+        function addTeam() {
+          const teamName = (teamInput.value || '').trim();
+          if (!teamName) return;
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          const list = normalizeHighlightTeams(data[key]);
+          list.push({ teamName, initiatives: [] });
+          data[key] = list;
+          saveData(data);
+          renderList(card, list);
+          teamInput.value = '';
+        }
+
+        if (addTeamBtn) addTeamBtn.addEventListener('click', addTeam);
+        if (teamInput) teamInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addTeam(); });
+        return;
+      }
+
+      if (card.getAttribute('data-releases') === 'true') {
+        items = normalizeReleaseItems(items);
+        if (items.length > 0) data[key] = items;
+        saveData(data);
+        renderList(card, items);
+
+        const nameInput = card.querySelector('[data-rel-name]');
+        const dateInput = card.querySelector('[data-rel-date]');
+        const opcoInput = card.querySelector('[data-rel-opco]');
+        const statusSelect = card.querySelector('[data-rel-status]');
+        const addBtn = card.querySelector('[data-rel-add]');
+
+        function addRelease() {
+          const releaseName = (nameInput.value || '').trim();
+          if (!releaseName) return;
+          const data = loadData();
+          if (!data[key]) data[key] = [];
+          const list = normalizeReleaseItems(data[key]);
+          list.push({
+            releaseName,
+            releaseDate: (dateInput.value || '').trim(),
+            releaseOpCo: (opcoInput.value || '').trim(),
+            releaseStatus: statusSelect.value
+          });
+          data[key] = list;
+          saveData(data);
+          renderList(card, list);
+          nameInput.value = '';
+          dateInput.value = '';
+          opcoInput.value = '';
+        }
+
+        addBtn.addEventListener('click', addRelease);
+        nameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addRelease(); });
+        return;
+      }
+
+      renderList(card, items);
+
+      const input = card.querySelector('[data-input]');
+      const addBtn = card.querySelector('[data-add]');
+      if (!input || !addBtn) return;
+
+      function addItem() {
+        const text = (input.value || '').trim();
+        if (!text) return;
+        const data = loadData();
+        if (!data[key]) data[key] = [];
+        data[key].push(text);
+        saveData(data);
+        renderList(card, data[key]);
+        input.value = '';
+      }
+
+      addBtn.addEventListener('click', addItem);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') addItem(); });
+    }
+
+    document.querySelectorAll('.card[data-section]').forEach(initCard);
+
+    const VIEW_STORAGE_KEY = 'delivery-dashboard-view';
+    const viewAdmin = document.getElementById('view-admin');
+    const viewLeadership = document.getElementById('view-leadership');
+
+    function setView(mode) {
+      if (mode === 'leadership') {
+        document.body.classList.add('leadership-view');
+        localStorage.setItem(VIEW_STORAGE_KEY, 'leadership');
+        viewAdmin.classList.remove('active');
+        viewLeadership.classList.add('active');
+      } else {
+        document.body.classList.remove('leadership-view');
+        localStorage.setItem(VIEW_STORAGE_KEY, 'admin');
+        viewAdmin.classList.add('active');
+        viewLeadership.classList.remove('active');
+      }
+    }
+
+    viewAdmin.addEventListener('click', (e) => { e.preventDefault(); setView('admin'); });
+    viewLeadership.addEventListener('click', (e) => { e.preventDefault(); setView('leadership'); });
+
+    const savedView = localStorage.getItem(VIEW_STORAGE_KEY);
+    setView(savedView === 'leadership' ? 'leadership' : 'admin');
+  </script>
+</body>
+</html>
