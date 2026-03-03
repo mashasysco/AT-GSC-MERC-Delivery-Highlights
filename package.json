@@ -1,0 +1,35 @@
+{
+  "name": "at-gsc-merc-delivery-highlights",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mashasysco/AT-GSC-MERC-Delivery-Highlights.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mashasysco/AT-GSC-MERC-Delivery-Highlights/issues"
+  },
+  "homepage": "https://github.com/mashasysco/AT-GSC-MERC-Delivery-Highlights#readme",
+  "dependencies": {
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "25.3.3",
+    "@types/react": "19.2.14",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.2.1",
+    "typescript": "5.9.3"
+  }
+}
