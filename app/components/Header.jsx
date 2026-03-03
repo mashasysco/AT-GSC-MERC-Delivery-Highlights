@@ -1,22 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useView } from '../context/ViewContext'
+
 
 export default function Header() {
-  const [view, setView] = useState('admin')
+  const { view, setViewMode } = useView()
 
   return (
     <header className="header">
       <h1>Delivery Dashboard</h1>
       <div className="view-toggle">
         <button
-          onClick={() => setView('admin')}
+          onClick={() => setViewMode('admin')}
           className={`view-toggle-btn ${view === 'admin' ? 'active' : ''}`}
         >
           Admin Portal
         </button>
         <button
-          onClick={() => setView('leadership')}
+          onClick={() => setViewMode('leadership')}
           className={`view-toggle-btn ${view === 'leadership' ? 'active' : ''}`}
         >
           Leadership View

@@ -4,10 +4,12 @@ import ProductPlanCard from './ProductPlanCard'
 import ResourceDashboardCard from './ResourceDashboardCard'
 import LearningsCard from './LearningsCard'
 import ReleasesCard from './ReleasesCard'
+import FileUploadSection from './FileUploadSection'
 
 export default function Dashboard() {
   return (
     <main className="dashboard">
+      <FileUploadSection />
       <div className="grid">
         <ActionItemsCard />
         <HighlightsCard />
