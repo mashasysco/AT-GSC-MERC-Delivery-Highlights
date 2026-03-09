@@ -11,14 +11,14 @@ export function ViewProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem(VIEW_STORAGE_KEY)
+    const stored = sessionStorage.getItem(VIEW_STORAGE_KEY)
     setView(stored || 'admin')
     setIsLoaded(true)
   }, [])
 
   const setViewMode = (mode) => {
     setView(mode)
-    localStorage.setItem(VIEW_STORAGE_KEY, mode)
+    sessionStorage.setItem(VIEW_STORAGE_KEY, mode)
   }
 
   return (

@@ -10,7 +10,7 @@ export default function Dashboard() {
   return (
     <main className="dashboard">
       <FileUploadSection />
-      <div className="grid">
+      <div className="flex-1 gap-20 space-y-4">
         <ActionItemsCard />
         <HighlightsCard />
         <ProductPlanCard />

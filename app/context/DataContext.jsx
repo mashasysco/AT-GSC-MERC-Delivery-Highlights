@@ -10,19 +10,19 @@ export function DataProvider({ children }) {
   const [data, setData] = useState({})
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // Load data from localStorage on mount
+  // Load data from sessionStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
+    const stored = sessionStorage.getItem(STORAGE_KEY)
     if (stored) {
       setData(JSON.parse(stored))
     }
     setIsLoaded(true)
   }, [])
 
-  // Save data to localStorage whenever it changes
+  // Save data to sessionStorage whenever it changes
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data))
     }
   }, [data, isLoaded])
 

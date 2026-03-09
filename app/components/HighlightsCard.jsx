@@ -113,7 +113,7 @@ export default function HighlightsCard() {
                     </div>
                   )}
                 </div>
-
+<div className='grid'>
                 {team.initiatives && team.initiatives.map((init, initIdx) => (
                   <div key={initIdx} className={`highlight-row ${ragColors[init.rag] || 'rag-green'}`}>
                     <div className="row-header">
@@ -301,7 +301,7 @@ export default function HighlightsCard() {
                     )}
                   </div>
                 ))}
-
+</div>
                 {!shouldHideAdmin && (
                   <button
                     type="button"
