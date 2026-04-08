@@ -1,0 +1,822 @@
+{
+  "data": {
+    "actionItems": [
+      {
+        "text": "Check the Open Power BI License for Gihan & Ramuthu",
+        "status": "Not Started",
+        "notes": ""
+      },
+      {
+        "text": "Compile the Internet Issues and Share with Asanga",
+        "status": "Not Started",
+        "notes": ""
+      }
+    ],
+    "highlights": [
+      {
+        "teamGroup": "ODI & IDP",
+        "teams": [
+          {
+            "teamName": "ODI",
+            "keyHighlights": [
+              {
+                "text": "BAU work across warehouse, transport, fleet, H&S, Finance and HR are ongoing in every sprint.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "",
+                "challenges": "IJP - Pending for Kenneth's replacement",
+                "releases": []
+              },
+              {
+                "text": "TEMPO - Initial Analysis and Discussions are completed. Development to begin by 9th March 2026.",
+                "rag": "Green",
+                "eta": "Mar 09, 2026",
+                "raid": "",
+                "challenges": "",
+                "releases": []
+              },
+              {
+                "text": "Geoflex - Wave 2 Rollout is complete: Opcos - 15, 19, 24, 39, 61. Wave 3 rollout is planned for 26 sites.",
+                "rag": "Green",
+                "eta": "Early March",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Wave 3 Rollout",
+                    "releaseDate": "Early March (TBD)"
+                  }
+                ]
+              },
+              {
+                "text": "ARRIVIO Next – Route Level - Development Ongoing. ARRIVIO Live (ARRIVIO Phase 2) - 1 Site (Baltimore) is live. Planned to rollout for 8 more sites. Date TBD.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "",
+                "challenges": "",
+                "releases": []
+              },
+              {
+                "text": "Introduced the AI bot - 'ODI Agile Assistant', built on the ROVO Sprint Assistant. Accelerates decision-making and reduce manual workload",
+                "rag": "Green",
+                "eta": "",
+                "raid": "",
+                "challenges": "",
+                "releases": []
+              }
+            ]
+          },
+          {
+            "teamName": "IDP",
+            "keyHighlights": [
+              {
+                "text": "Agentic Document Extractor - Development (MVP) to be executed from 25th Feb 2026",
+                "rag": "Green",
+                "eta": "Feb 25, 2026",
+                "raid": "",
+                "challenges": "",
+                "releases": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "AMERICAS TECHNOLOGY",
+        "teams": [
+          {
+            "teamName": "Canada",
+            "keyHighlights": [
+              {
+                "text": "PaaStry+ Migrations",
+                "rag": "Green",
+                "eta": "Mar 31, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "PaaStry+ Migrations",
+                    "releaseDate": "31st March"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "Merchandising",
+            "keyHighlights": [
+              {
+                "text": "EDTS and Appointment Scheduler Modernization In Progress",
+                "rag": "Green",
+                "eta": "",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "EDTS",
+                    "releaseDate": "20th April"
+                  },
+                  {
+                    "releaseName": "App Scheduler",
+                    "releaseDate": "09th April"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "Ecom",
+            "keyHighlights": [
+              {
+                "text": "Dobby Chatbot Integration Completed",
+                "rag": "Green",
+                "eta": "Mar 30, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Dobby User Management",
+                    "releaseDate": "30th March"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "FreshPoint",
+            "keyHighlights": [
+              {
+                "text": "WellsFargo Beta Release done",
+                "rag": "Green",
+                "eta": "Feb 25, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "WellsFargo release 1.0",
+                    "releaseDate": "25th Feb"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "SYGMA",
+            "keyHighlights": [
+              {
+                "text": "DOT Net upgrade from 4.8 to 10",
+                "rag": "Green",
+                "eta": "",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": []
+              }
+            ]
+          },
+          {
+            "teamName": "Sales BAU",
+            "keyHighlights": [
+              {
+                "text": "Portal - Responsive Web Integration",
+                "rag": "Green",
+                "eta": "Mar 30, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Portal - Responsive Web Integration",
+                    "releaseDate": "30th March"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "Buckhead / New Port",
+            "keyHighlights": [
+              {
+                "text": "Topshelf Data extraction enhancements",
+                "rag": "Green",
+                "eta": "Feb 27, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Topshelf Data extraction enhancements",
+                    "releaseDate": "27th Feb"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "IDS",
+            "keyHighlights": [
+              {
+                "text": "PriceFx- Fee code extraction. Finance – Cheque detail extraction logic changes",
+                "rag": "Green",
+                "eta": "Mar 03, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "PriceFx/Finance changes",
+                    "releaseDate": "3rd March"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "IFG",
+        "teams": [
+          {
+            "teamName": "IFG",
+            "keyHighlights": [
+              {
+                "text": "Requirement Grooming, Local Setup",
+                "rag": "Green",
+                "eta": "TBD",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "OREO",
+        "teams": [
+          {
+            "teamName": "OREO",
+            "keyHighlights": [
+              {
+                "text": "OM-Next - Site Rollout: 9th Eastern Shores (Hampton Roads (073) – East MD (010)) on Feb14, 10th Mid East (Pittsburg (093) – Cleveland (105)), 11th Northern California (Sacramento (031) – San Francisco (050)). VPL (Vendor Price List) Processor automation released on Feb 14. Smart merge logic (consider RDC POs) QA testing. One FS to Many LMS implementation.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Dependency on a single Front-End developer (Contractor)",
+                "challenges": "",
+                "releases": [
+                  {
+                    "releaseName": "OM-Next Site Rollout",
+                    "releaseDate": "Mar 07"
+                  },
+                  {
+                    "releaseName": "OM-Next Site Rollout",
+                    "releaseDate": "Apr 18"
+                  },
+                  {
+                    "releaseName": "TQE Ready",
+                    "releaseDate": "Feb 28"
+                  },
+                  {
+                    "releaseName": "E2E Ready",
+                    "releaseDate": "End Apr"
+                  }
+                ]
+              },
+              {
+                "text": "OM-Next Management Console - Shared Items feature released on Feb 14. OM-Next Order rejection reason development. Shared Items enhancements. Authorization Phase 2 implementation.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "",
+                "challenges": "",
+                "releases": [
+                  {
+                    "releaseName": "OM-Next Management Console",
+                    "releaseDate": "Mar 04"
+                  }
+                ]
+              },
+              {
+                "text": "IIB to OREO - Regular Order Go-Live (061) on Feb 10. CO RDF (Colorado Retail Delivery Fee) TQE testing in progress. IFG Orders Prod deployed, Go-Live TBD by SHOP.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "",
+                "challenges": "",
+                "releases": [
+                  {
+                    "releaseName": "IIB to OREO",
+                    "releaseDate": "Feb 24"
+                  }
+                ]
+              },
+              {
+                "text": "Sysco Commerce (Specialty) - Order Request, Response, and Status for Topshelf dev completed, QA testing & TQE support in progress",
+                "rag": "Green",
+                "eta": "TBD",
+                "raid": "",
+                "challenges": "",
+                "releases": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "OBTE",
+        "teams": [
+          {
+            "teamName": "OBTE",
+            "keyHighlights": [
+              {
+                "text": "CDE (Customer Delivery Experience) – ETA (Estimated Time To Arrival) - Archive mechanism Prod deployed on Feb 01. Enabled all USBL sited in STG env on Feb 08. Support and enhancements.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              },
+              {
+                "text": "CDE - STS Live (Sysco Transportation System Live) - Rollout to 7 sites (Raleigh, San Francisco, Los Angeles, Minnesota, Tampa Bay, Columbia, Riverside) on Feb 02. Rollout to other 68 USBL sites on Feb 07. Post Prod enhancements development.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              },
+              {
+                "text": "CDE - RNA (Roadnet Anywhere) - RNA & Roadnet parallel run functionality development. Perf test analysis & execution. UAT support.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              },
+              {
+                "text": "CDE – SDE (Stop Detail Enhancement) - BE services & Infra created. BE & FE dev in progress.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              },
+              {
+                "text": "Sysco Transportation System (Access for all OBTE Apps) - OpenFGA model development. Initial design & analysis.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              },
+              {
+                "text": "CSAS - BY enabled OpCo configuration deployed on Feb 16.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              },
+              {
+                "text": "BAU - Continuous support as and when required (CDSM, ODI service time, Samsara)",
+                "rag": "Green",
+                "eta": "",
+                "raid": "Lack of dedicated SUS and Mulesoft SAP support per son affect the test data creation",
+                "challenges": "Recruitment for two backfill positions is still pending",
+                "releases": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "WMTE",
+        "teams": [
+          {
+            "teamName": "WMTE",
+            "keyHighlights": [
+              {
+                "text": "MoveSync Phase 1 - Handed to UAT: Multi-OpCo Authorization & UI Enhancement features on Feb 05. UAT Support. Phase 1 implementation.",
+                "rag": "Green",
+                "eta": "Mar 12, 2026",
+                "raid": "Insufficient mobile dev capacity may impact timelines",
+                "challenges": "",
+                "releases": [
+                  {
+                    "releaseName": "MoveSync Phase 1",
+                    "releaseDate": "Mar 12"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "SRE",
+        "teams": [
+          {
+            "teamName": "SRE",
+            "keyHighlights": [
+              {
+                "text": "Reduced the Cloud Tag violations 60% . AWS - Rolled out the automations. Azure & GCP – Getting access in-progress.",
+                "rag": "Green",
+                "eta": "Feb 27, 2026",
+                "raid": "Dependency – HCET, Cyber",
+                "challenges": "N/A",
+                "releases": []
+              },
+              {
+                "text": "Enable in OKRA GitHub Deployment to identify the frequency for DORA metrics enablement.",
+                "rag": "Green",
+                "eta": "Completed",
+                "raid": "",
+                "challenges": "N/A",
+                "releases": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "MERCHANDISING",
+        "teams": [
+          {
+            "teamName": "Common Assortment",
+            "keyHighlights": [
+              {
+                "text": "AOT Phase 1 – UAT in-progress",
+                "rag": "Green",
+                "eta": "Feb 24, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "AOT Phase 1",
+                    "releaseDate": "24th Feb"
+                  }
+                ]
+              },
+              {
+                "text": "AOT Phase 2 – With Multiple choice groups & Dashboards",
+                "rag": "Green",
+                "eta": "Mar 13, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "AOT Phase 2",
+                    "releaseDate": "13th March"
+                  }
+                ]
+              },
+              {
+                "text": "AOT Phase 3 – Chatbot",
+                "rag": "Green",
+                "eta": "Apr 17, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "AOT Phase 3",
+                    "releaseDate": "17th April"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "PGI",
+            "keyHighlights": [
+              {
+                "text": "Ask PGI – Chatbot Phase 01",
+                "rag": "Green",
+                "eta": "Mar 14, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Ask PGI - Chatbot Phase 01",
+                    "releaseDate": "14th March"
+                  }
+                ]
+              },
+              {
+                "text": "Data Extract Competitive Benchmark",
+                "rag": "Green",
+                "eta": "Mar 28, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Data Extract Competitive Benchmark",
+                    "releaseDate": "28th March"
+                  }
+                ]
+              },
+              {
+                "text": "PGI Lite",
+                "rag": "Green",
+                "eta": "TBD",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": []
+              }
+            ]
+          },
+          {
+            "teamName": "Supplier Fees",
+            "keyHighlights": [
+              {
+                "text": "OTIF claim upload and submission",
+                "rag": "Green",
+                "eta": "Mar 21, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "OTIF claim upload and submission",
+                    "releaseDate": "21st March"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "Commodity Pricing",
+            "keyHighlights": [
+              {
+                "text": "Release all Dairy sub-categories",
+                "rag": "Green",
+                "eta": "Feb 27, 2026",
+                "raid": "N/A",
+                "challenges": "N/A",
+                "releases": [
+                  {
+                    "releaseName": "Release all Dairy sub-categories",
+                    "releaseDate": "27th Feb"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "teamGroup": "SWMS",
+        "teams": [
+          {
+            "teamName": "Feature",
+            "keyHighlights": [
+              {
+                "text": "Prod release on 62.0.3 Patch release for GB on 11th Feb. - Completed",
+                "rag": "Green",
+                "eta": "",
+                "raid": "There is a challenge to receive QE certification in time for a R63 Prod Deployment on 28th Feb - Issue. Provided additional QE resources for R63 to mitigate this risk",
+                "challenges": "",
+                "releases": [
+                  {
+                    "releaseName": "R63",
+                    "releaseDate": "28th Feb"
+                  },
+                  {
+                    "releaseName": "R64 UAT",
+                    "releaseDate": "End March (TBC)"
+                  },
+                  {
+                    "releaseName": "R64",
+                    "releaseDate": "1st June (Business Go-Live with Box Pick)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "NEW UI",
+            "keyHighlights": [
+              {
+                "text": "Pipeline Integration",
+                "rag": "Green",
+                "eta": "TBC",
+                "raid": "Working with Platform team to merge PRs - Dependency",
+                "challenges": "",
+                "releases": [
+                  {
+                    "releaseName": "Pipeline Integration",
+                    "releaseDate": "TBC"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "Mobile",
+            "keyHighlights": [
+              {
+                "text": "Prod patch release on 62.0.4. R61.1 [FSMA]. Production support. Tech Debt.",
+                "rag": "Green",
+                "eta": "",
+                "raid": "",
+                "challenges": "Resource reallocation for GB",
+                "releases": [
+                  {
+                    "releaseName": "QE completion",
+                    "releaseDate": "27th Feb (TBD)"
+                  },
+                  {
+                    "releaseName": "QE completion",
+                    "releaseDate": "Mid March (TBD)"
+                  },
+                  {
+                    "releaseName": "SOS_10.1.6 - QE completion",
+                    "releaseDate": "09th March (TBD)"
+                  },
+                  {
+                    "releaseName": "Dev completion",
+                    "releaseDate": "Mid May (TBD)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "teamName": "Platform",
+            "keyHighlights": [
+              {
+                "text": "DR Readiness",
+                "rag": "Green",
+                "eta": "FY26Q3",
+                "raid": "Dependency - Cyber team",
+                "challenges": "Blocked from Illumio to proceed with WebLogic testing",
+                "releases": [
+                  {
+                    "releaseName": "DR Readiness",
+                    "releaseDate": "FY26Q3"
+                  }
+                ]
+              },
+              {
+                "text": "RDC Rhel9 Migration",
+                "rag": "Green",
+                "eta": "TBD",
+                "raid": "Dependency - QE team",
+                "challenges": "Get the QE resources to competed this tasks.",
+                "releases": []
+              },
+              {
+                "text": "Create environment for EU non-prods",
+                "rag": "Green",
+                "eta": "FY26Q3",
+                "raid": "Dependency - Cyber Team",
+                "challenges": "Get the approval for new IP address and exiting ports",
+                "releases": [
+                  {
+                    "releaseName": "Create environment for EU non-prods",
+                    "releaseDate": "FY26Q3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "releases": [
+      {
+        "releaseName": "Wave 3 Rollout",
+        "releaseDate": "Early March (TBD)",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "PaaStry+ Migrations",
+        "releaseDate": "Mar 31, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "EDTS",
+        "releaseDate": "Apr 20, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "App Scheduler",
+        "releaseDate": "Apr 09, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "Dobby User Management",
+        "releaseDate": "Mar 30, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "WellsFargo release 1.0",
+        "releaseDate": "Feb 25, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "Portal - Responsive Web Integration",
+        "releaseDate": "Mar 30, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "Topshelf Data extraction enhancements",
+        "releaseDate": "Feb 27, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "PriceFx/Finance changes",
+        "releaseDate": "Mar 03, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "OM-Next Site Rollout",
+        "releaseDate": "Mar 07, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "OM-Next Management Console",
+        "releaseDate": "Mar 04, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "IIB to OREO",
+        "releaseDate": "Feb 24, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "MoveSync Phase 1",
+        "releaseDate": "Mar 12, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "AOT Phase 1",
+        "releaseDate": "Feb 24, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "AOT Phase 2",
+        "releaseDate": "Mar 13, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "AOT Phase 3",
+        "releaseDate": "Apr 17, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "Ask PGI - Chatbot Phase 01",
+        "releaseDate": "Mar 14, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "Data Extract Competitive Benchmark",
+        "releaseDate": "Mar 28, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "OTIF claim upload and submission",
+        "releaseDate": "Mar 21, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "Release all Dairy sub-categories",
+        "releaseDate": "Feb 27, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "R63",
+        "releaseDate": "Feb 28, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      },
+      {
+        "releaseName": "R64",
+        "releaseDate": "Jun 01, 2026",
+        "releaseOpCo": "",
+        "releaseStatus": "Planned"
+      }
+    ],
+    "productPlan": [],
+    "resourceDashboard": [],
+    "learnings": [
+      "Key Gaps Identified in Team Morale Index: Repetition of Similar Constructs.",
+      "Key Gaps Identified in Team Morale Index: Question Ambiguity.",
+      "Key Gaps Identified in Team Morale Index: No Measure of other standard team morale dimensions like Growth & Recognition or Leadership & Support.",
+      "Suggested Improvement for Team Morale Index: Make questions one-directional with multi-dimensional assessment coverage.",
+      "Suggested Improvement for Team Morale Index: Provide a recommended scale explanation for survey questions.",
+      "Suggested Improvement for Team Morale Index: Revise wording and question order to reduce habitual responses."
+    ]
+  }
+}

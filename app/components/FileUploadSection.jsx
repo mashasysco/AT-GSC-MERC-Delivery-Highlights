@@ -5,7 +5,7 @@ import { useData } from '../context/DataContext'
 import { useView } from '../context/ViewContext'
 
 export default function FileUploadSection() {
-  const { data: contextData, addActionItem, addTeam, addInitiative, updateInitiative, addReleaseToInitiative, updateReleaseInInitiative, addRelease, addLink, addLearning } = useData()
+  const { data: contextData, addActionItem, addTeamGroup, addTeam, addKeyHighlight, updateKeyHighlight, addReleaseToKeyHighlight, updateReleaseInKeyHighlight, addRelease, addLink, addLearning, clearAllData } = useData()
   const { view } = useView()
   const [file, setFile] = useState(null)
   const [uploading, setUploading] = useState(false)
@@ -13,6 +13,14 @@ export default function FileUploadSection() {
   const [error, setError] = useState('')
 
   const shouldHideAdmin = view === 'leadership'
+
+  const handleClearData = () => {
+    if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+      clearAllData()
+    }
+  }
+
+
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0]
@@ -62,39 +70,48 @@ export default function FileUploadSection() {
           })
         }
 
-        // Add highlights with nested structure
+        // Add highlights with new teamGroup structure
         if (highlights && Array.isArray(highlights)) {
-          highlights.forEach((team, teamIdx) => {
-            addTeam(team.teamName)
-            if (team.initiatives && Array.isArray(team.initiatives)) {
-              team.initiatives.forEach((init, initIdx) => {
-                addInitiative(teamIdx)
-                // Update the newly added initiative
-                setTimeout(() => {
-                  updateInitiative(teamIdx, initIdx, {
-                    name: init.name,
-                    keyHighlights: init.keyHighlights,
-                    rag: init.rag,
-                    eta: init.eta,
-                    raid: init.raid,
-                    challenges: init.challenges
-                  })
-
-                  // Add releases to this initiative
-                  if (init.releases && Array.isArray(init.releases)) {
-                    init.releases.forEach((release, relIdx) => {
-                      addReleaseToInitiative(teamIdx, initIdx)
-                      setTimeout(() => {
-                        updateReleaseInInitiative(teamIdx, initIdx, relIdx, {
-                          releaseName: release.releaseName,
-                          releaseDate: release.releaseDate
-                        })
-                      }, 100)
-                    })
-                  }
-                }, 100)
-              })
-            }
+          highlights.forEach((teamGroup, tgIdx) => {
+            addTeamGroup(teamGroup.teamGroup)
+            // Add a small delay before adding teams to ensure teamGroup is in state
+            setTimeout(() => {
+              if (teamGroup.teams && Array.isArray(teamGroup.teams)) {
+                teamGroup.teams.forEach((team, teamIdx) => {
+                  addTeam(tgIdx, team.teamName)
+                  // Add another small delay before adding highlights
+                  setTimeout(() => {
+                    if (team.keyHighlights && Array.isArray(team.keyHighlights)) {
+                      team.keyHighlights.forEach((highlight, highlightIdx) => {
+                        addKeyHighlight(tgIdx, teamIdx)
+                        // Update with data immediately (no additional delay needed)
+                        setTimeout(() => {
+                          updateKeyHighlight(tgIdx, teamIdx, highlightIdx, {
+                            text: highlight.text,
+                            rag: highlight.rag,
+                            eta: highlight.eta,
+                            raid: highlight.raid,
+                            challenges: highlight.challenges
+                          })
+                          // Add releases to this key highlight
+                          if (highlight.releases && Array.isArray(highlight.releases)) {
+                            highlight.releases.forEach((release, relIdx) => {
+                              addReleaseToKeyHighlight(tgIdx, teamIdx, highlightIdx)
+                              setTimeout(() => {
+                                updateReleaseInKeyHighlight(tgIdx, teamIdx, highlightIdx, relIdx, {
+                                  releaseName: release.releaseName,
+                                  releaseDate: release.releaseDate
+                                })
+                              }, 50)
+                            })
+                          }
+                        }, 50)
+                      })
+                    }
+                  }, 50)
+                })
+              }
+            }, 50)
           })
         }
 
@@ -150,7 +167,7 @@ export default function FileUploadSection() {
       border: '1px solid var(--border)',
       borderRadius: '12px',
       marginBottom: '2rem',
-      maxWidth: '600px'
+      width: '100%'
     }}>
       <h3 style={{
         fontSize: '1rem',
@@ -197,10 +214,42 @@ export default function FileUploadSection() {
             fontSize: '0.875rem',
             cursor: uploading || !file ? 'not-allowed' : 'pointer',
             opacity: uploading || !file ? 0.6 : 1,
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          {uploading && (
+            <span style={{
+              display: 'inline-block',
+              width: '1rem',
+              height: '1rem',
+              border: '2px solid rgba(255,255,255,0.3)',
+              borderTop: '2px solid white',
+              borderRadius: '50%',
+              animation: 'spin 0.8s linear infinite'
+            }} />
+          )}
+          {uploading ? 'Processing...' : 'Submit'}
+        </button>
+        <button
+          type="button"
+          onClick={handleClearData}
+          disabled={uploading}
+          style={{
+            padding: '0.5rem 1rem',
+            background: '#5f6368',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '0.875rem',
+            cursor: uploading ? 'not-allowed' : 'pointer',
+            opacity: uploading ? 0.5 : 1,
             whiteSpace: 'nowrap'
           }}
         >
-          {uploading ? 'Processing...' : 'Submit'}
+          Clear All Data
         </button>
       </div>
 
@@ -241,6 +290,42 @@ export default function FileUploadSection() {
           ✗ {error}
         </p>
       )}
+
+      {uploading && (
+        <div style={{
+          marginTop: '1.5rem',
+          padding: '1.5rem',
+          background: 'rgba(0,0,0,0.1)',
+          borderRadius: '8px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem'
+        }}>
+          <div style={{
+            width: '3rem',
+            height: '3rem',
+            border: '3px solid rgba(100,150,200,0.3)',
+            borderTop: '3px solid var(--accent)',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite'
+          }} />
+          <p style={{
+            fontSize: '0.9rem',
+            color: 'var(--text-muted)',
+            margin: 0
+          }}>
+            Processing PDF and populating data...
+          </p>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   )
 }

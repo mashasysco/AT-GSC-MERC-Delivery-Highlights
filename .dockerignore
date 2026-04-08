@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+docs/
+.env*
+.sst/
+sst.config.ts
+sst-env.d.ts
+scripts/
+run.sh
+lambda
+*.tmp

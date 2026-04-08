@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Extract agent_response from the result
     const agentResponse = thirdPartyData?.data?.responses?.agent_response
-    console.log("thirdPartData: ", thirdPartyData);
+    console.log(`agentResponse: ${JSON.stringify(agentResponse, null, "\t")}`);
     if (!agentResponse) {
       return NextResponse.json(
         { success: false, error: "Invalid response from SAGE" },

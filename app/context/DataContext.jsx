@@ -30,8 +30,8 @@ export function DataProvider({ children }) {
   const addActionItem = (text, status = 'Not Started', notes = '') => {
     setData(prev => ({
       ...prev,
-      'action-items': [
-        ...(prev['action-items'] || []),
+      actionItems: [
+        ...(prev.actionItems || []),
         { text, status, notes }
       ]
     }))
@@ -40,7 +40,7 @@ export function DataProvider({ children }) {
   const updateActionItem = (index, updates) => {
     setData(prev => ({
       ...prev,
-      'action-items': prev['action-items'].map((item, i) =>
+      actionItems: (prev.actionItems || []).map((item, i) =>
         i === index ? { ...item, ...updates } : item
       )
     }))
@@ -49,156 +49,244 @@ export function DataProvider({ children }) {
   const removeActionItem = (index) => {
     setData(prev => ({
       ...prev,
-      'action-items': prev['action-items'].filter((_, i) => i !== index)
+      actionItems: (prev.actionItems || []).filter((_, i) => i !== index)
     }))
   }
 
-  // Highlights (Teams with Initiatives)
-  const addTeam = (teamName) => {
+  // Highlights (TeamGroups with Teams with KeyHighlights)
+  const addTeamGroup = (teamGroup) => {
     setData(prev => ({
       ...prev,
       highlights: [
         ...(prev.highlights || []),
-        { teamName, initiatives: [] }
+        { teamGroup, teams: [] }
       ]
     }))
   }
 
-  const removeTeam = (teamIndex) => {
+  const removeTeamGroup = (teamGroupIndex) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.filter((_, i) => i !== teamIndex)
+      highlights: (prev.highlights || []).filter((_, i) => i !== teamGroupIndex)
     }))
   }
 
-  const updateTeamName = (teamIndex, newName) => {
+  const updateTeamGroupName = (teamGroupIndex, newName) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((team, i) =>
-        i === teamIndex ? { ...team, teamName: newName } : team
+      highlights: (prev.highlights || []).map((tg, i) =>
+        i === teamGroupIndex ? { ...tg, teamGroup: newName } : tg
       )
     }))
   }
 
-  const addInitiative = (teamIndex) => {
+  const addTeam = (teamGroupIndex, teamName) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((team, i) =>
-        i === teamIndex
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
           ? {
-            ...team,
-            initiatives: [
-              ...(team.initiatives || []),
-              {
-                name: 'New Initiative',
-                keyHighlights: '',
-                rag: 'Green',
-                eta: '',
-                raid: '',
-                challenges: '',
-                releases: []
-              }
+            ...tg,
+            teams: [
+              ...(tg.teams || []),
+              { teamName, keyHighlights: [] }
             ]
           }
-          : team
+          : tg
       )
     }))
   }
 
-  const updateInitiative = (teamIndex, initIndex, updates) => {
+  const removeTeam = (teamGroupIndex, teamIndex) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((team, ti) =>
-        ti === teamIndex
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
           ? {
-            ...team,
-            initiatives: team.initiatives.map((init, ii) =>
-              ii === initIndex ? { ...init, ...updates } : init
+            ...tg,
+            teams: tg.teams.filter((_, i) => i !== teamIndex)
+          }
+          : tg
+      )
+    }))
+  }
+
+  const updateTeamName = (teamGroupIndex, teamIndex, newName) => {
+    setData(prev => ({
+      ...prev,
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
+          ? {
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex ? { ...team, teamName: newName } : team
             )
           }
-          : team
+          : tg
       )
     }))
   }
 
-  const removeInitiative = (teamIndex, initIndex) => {
+  const addKeyHighlight = (teamGroupIndex, teamIndex) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((team, ti) =>
-        ti === teamIndex
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
           ? {
-            ...team,
-            initiatives: team.initiatives.filter((_, i) => i !== initIndex)
-          }
-          : team
-      )
-    }))
-  }
-
-  const addReleaseToInitiative = (teamIndex, initIndex) => {
-    setData(prev => ({
-      ...prev,
-      highlights: prev.highlights.map((team, ti) =>
-        ti === teamIndex
-          ? {
-            ...team,
-            initiatives: team.initiatives.map((init, ii) =>
-              ii === initIndex
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex
                 ? {
-                  ...init,
-                  releases: [
-                    ...(init.releases || []),
-                    { releaseName: '', releaseDate: '' }
+                  ...team,
+                  keyHighlights: [
+                    ...(team.keyHighlights || []),
+                    {
+                      text: '',
+                      rag: 'Green',
+                      eta: '',
+                      raid: '',
+                      challenges: '',
+                      releases: []
+                    }
                   ]
                 }
-                : init
+                : team
             )
           }
-          : team
+          : tg
       )
     }))
   }
 
-  const updateReleaseInInitiative = (teamIndex, initIndex, releaseIndex, updates) => {
+  const updateKeyHighlight = (teamGroupIndex, teamIndex, highlightIndex, updates) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((team, ti) =>
-        ti === teamIndex
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
           ? {
-            ...team,
-            initiatives: team.initiatives.map((init, ii) =>
-              ii === initIndex
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex
                 ? {
-                  ...init,
-                  releases: init.releases.map((rel, ri) =>
-                    ri === releaseIndex ? { ...rel, ...updates } : rel
+                  ...team,
+                  keyHighlights: team.keyHighlights.map((kh, khi) =>
+                    khi === highlightIndex ? { ...kh, ...updates } : kh
                   )
                 }
-                : init
+                : team
             )
           }
-          : team
+          : tg
       )
     }))
   }
 
-  const removeReleaseFromInitiative = (teamIndex, initIndex, releaseIndex) => {
+  const removeKeyHighlight = (teamGroupIndex, teamIndex, highlightIndex) => {
     setData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((team, ti) =>
-        ti === teamIndex
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
           ? {
-            ...team,
-            initiatives: team.initiatives.map((init, ii) =>
-              ii === initIndex
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex
                 ? {
-                  ...init,
-                  releases: init.releases.filter((_, i) => i !== releaseIndex)
+                  ...team,
+                  keyHighlights: team.keyHighlights.filter((_, i) => i !== highlightIndex)
                 }
-                : init
+                : team
             )
           }
-          : team
+          : tg
+      )
+    }))
+  }
+
+  const addReleaseToKeyHighlight = (teamGroupIndex, teamIndex, highlightIndex) => {
+    setData(prev => ({
+      ...prev,
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
+          ? {
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex
+                ? {
+                  ...team,
+                  keyHighlights: team.keyHighlights.map((kh, khi) =>
+                    khi === highlightIndex
+                      ? {
+                        ...kh,
+                        releases: [
+                          ...(kh.releases || []),
+                          { releaseName: '', releaseDate: '' }
+                        ]
+                      }
+                      : kh
+                  )
+                }
+                : team
+            )
+          }
+          : tg
+      )
+    }))
+  }
+
+  const updateReleaseInKeyHighlight = (teamGroupIndex, teamIndex, highlightIndex, releaseIndex, updates) => {
+    setData(prev => ({
+      ...prev,
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
+          ? {
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex
+                ? {
+                  ...team,
+                  keyHighlights: team.keyHighlights.map((kh, khi) =>
+                    khi === highlightIndex
+                      ? {
+                        ...kh,
+                        releases: kh.releases.map((rel, ri) =>
+                          ri === releaseIndex ? { ...rel, ...updates } : rel
+                        )
+                      }
+                      : kh
+                  )
+                }
+                : team
+            )
+          }
+          : tg
+      )
+    }))
+  }
+
+  const removeReleaseFromKeyHighlight = (teamGroupIndex, teamIndex, highlightIndex, releaseIndex) => {
+    setData(prev => ({
+      ...prev,
+      highlights: (prev.highlights || []).map((tg, tgi) =>
+        tgi === teamGroupIndex
+          ? {
+            ...tg,
+            teams: tg.teams.map((team, ti) =>
+              ti === teamIndex
+                ? {
+                  ...team,
+                  keyHighlights: team.keyHighlights.map((kh, khi) =>
+                    khi === highlightIndex
+                      ? {
+                        ...kh,
+                        releases: kh.releases.filter((_, i) => i !== releaseIndex)
+                      }
+                      : kh
+                  )
+                }
+                : team
+            )
+          }
+          : tg
       )
     }))
   }
@@ -278,6 +366,17 @@ export function DataProvider({ children }) {
     }))
   }
 
+  const clearAllData = () => {
+    setData({
+      actionItems: [],
+      highlights: [],
+      releases: [],
+      'product-plan': [],
+      'resource-dashboard': [],
+      learnings: []
+    })
+  }
+
   const value = {
     data,
     // Action Items
@@ -285,15 +384,18 @@ export function DataProvider({ children }) {
     updateActionItem,
     removeActionItem,
     // Highlights
+    addTeamGroup,
+    removeTeamGroup,
+    updateTeamGroupName,
     addTeam,
     removeTeam,
     updateTeamName,
-    addInitiative,
-    updateInitiative,
-    removeInitiative,
-    addReleaseToInitiative,
-    updateReleaseInInitiative,
-    removeReleaseFromInitiative,
+    addKeyHighlight,
+    updateKeyHighlight,
+    removeKeyHighlight,
+    addReleaseToKeyHighlight,
+    updateReleaseInKeyHighlight,
+    removeReleaseFromKeyHighlight,
     // Releases
     addRelease,
     updateRelease,
@@ -306,6 +408,7 @@ export function DataProvider({ children }) {
     addLearning,
     updateLearning,
     removeLearning,
+    clearAllData,
     isLoaded
   }
 

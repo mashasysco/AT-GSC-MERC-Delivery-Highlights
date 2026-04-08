@@ -13,7 +13,7 @@ export default function ActionItemsCard() {
   const [newNotes, setNewNotes] = useState('')
   const [editingNotes, setEditingNotes] = useState({})
 
-  const items = data['action-items'] || []
+  const items = data.actionItems || []
 
   const handleAdd = () => {
     if (newText.trim()) {
