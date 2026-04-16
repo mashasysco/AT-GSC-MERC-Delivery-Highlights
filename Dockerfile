@@ -1,14 +1,16 @@
 # ── Stage 1: Build ────────────────────────────────────────────────
 # Install dependencies and build the Next.js app in standalone mode.
-FROM node:22-alpine AS builder
+FROM node:22-bookworm AS builder
 
 WORKDIR /app
 
-# Copy package files first (Docker caches this layer if they don't change)
-COPY package.json package-lock.json* ./
+# Copy package files and npm config first (Docker caches this layer if they don't change)
+COPY package.json package-lock.json* .npmrc ./
+
+RUN curl -I https://registry.npmjs.org/
 
 # Install ALL dependencies (including devDependencies for the build)
-RUN npm ci
+RUN npm ci --ignore-scripts --verbose
 
 # Copy the rest of the source code
 COPY . .

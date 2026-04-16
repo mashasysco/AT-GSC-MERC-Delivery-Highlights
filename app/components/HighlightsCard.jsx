@@ -32,10 +32,10 @@ export default function HighlightsCard() {
   const teamGroups = data.highlights || []
   const shouldHideAdmin = view === 'leadership'
 
-  const ragColors = {
-    'Red': 'rag-red',
-    'Amber': 'rag-amber',
-    'Green': 'rag-green'
+  // Determine if a team should span 2 columns
+  const shouldSpanTwoColumns = (teamIdx, teamGroup) => {
+    const manyHighlights = teamGroup.teams[teamIdx].keyHighlights?.length >= 5
+    return manyHighlights 
   }
 
   const toggleTeamGroupCollapse = (tgIdx) => {
@@ -167,7 +167,8 @@ export default function HighlightsCard() {
               <div className='grid' style={{ marginBottom: '1rem' }}>
                 {teamGroup.teams && teamGroup.teams.map((team, teamIdx) => (
                   <div 
-                    key={teamIdx} 
+                    key={teamIdx}
+                    className={shouldSpanTwoColumns(teamIdx, teamGroup) ? 'grid-span-2' : ''}
                     style={{
                       background: 'var(--bg-primary)',
                       border: '1px solid var(--border)',
@@ -297,25 +298,24 @@ export default function HighlightsCard() {
                                 <>
                                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                     <div style={{ flex: 1 }}>
-                                      <div style={{ color: 'var(--text)', fontWeight: '500', marginBottom: '0.25rem' }}>
-                                        {highlight.text}
+                                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', color: 'var(--text)', fontWeight: '500', marginBottom: '0.25rem' }}>
+                                        <span>{highlight.text}</span>
                                       </div>
-                                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                                        <div
-                                          style={{
-                                            width: '12px',
-                                            height: '12px',
-                                            borderRadius: '50%',
-                                            background: highlight.rag === 'Red' ? '#c62828' : highlight.rag === 'Amber' ? '#f9a825' : '#2e7d32',
-                                            flexShrink: 0
-                                          }}
-                                          title={`Status: ${highlight.rag}`}
-                                        />
-                                        {highlight.eta && <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>ETA: {highlight.eta}</span>}
-                                      </div>
+                                      {highlight.eta && <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginLeft: 0 }}>ETA: {highlight.eta}</div>}
                                     </div>
-                                    {!shouldHideAdmin && (
-                                      <div style={{ display: 'flex', gap: '0.25rem', flexShrink: 0 }} className="highlight-actions">
+                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexShrink: 0 }}>
+                                      <div
+                                        style={{
+                                          width: '12px',
+                                          height: '12px',
+                                          borderRadius: '50%',
+                                          background: highlight.rag === 'Red' ? '#c62828' : highlight.rag === 'Amber' ? '#f9a825' : '#2e7d32',
+                                          flexShrink: 0
+                                        }}
+                                        title={`Status: ${highlight.rag}`}
+                                      />
+                                      {!shouldHideAdmin && (
+                                        <div style={{ display: 'flex', gap: '0.25rem' }} className="highlight-actions">
                                         <button
                                           type="button"
                                           onClick={() => {
@@ -328,7 +328,7 @@ export default function HighlightsCard() {
                                               challenges: highlight.challenges
                                             })
                                           }}
-                                          style={{ padding: '0.2rem 0.4rem', fontSize: '0.85rem', background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease, color 0.2s ease', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                          style={{ padding: '0.3rem 0.5rem', fontSize: '0.85rem', background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                           title="Edit highlight"
                                         >
                                           <Edit2 size={16} />
@@ -336,13 +336,14 @@ export default function HighlightsCard() {
                                         <button
                                           type="button"
                                           onClick={() => removeKeyHighlight(tgIdx, teamIdx, highlightIdx)}
-                                          style={{ padding: '0.2rem 0.4rem', fontSize: '0.75rem', background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease, color 0.2s ease', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                          style={{ padding: '0.3rem 0.5rem', fontSize: '0.75rem', background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                           title="Delete highlight"
                                         >
                                           <Trash2 size={16} />
                                         </button>
-                                      </div>
-                                    )}
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
                                   {highlight.raid && <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}><strong>RAID:</strong> {highlight.raid}</div>}
                                   {highlight.challenges && <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}><strong>Challenges:</strong> {highlight.challenges}</div>}
@@ -362,7 +363,7 @@ export default function HighlightsCard() {
                                                     releaseDate: release.releaseDate
                                                   })
                                                 }}
-                                                style={{ padding: '0.1rem 0.25rem', fontSize: '0.75rem', background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease, color 0.2s ease', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                style={{ padding: '0.2rem 0.4rem', fontSize: '0.75rem', background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                                 title="Edit release"
                                               >
                                                 <Edit2 size={14} />
@@ -370,7 +371,7 @@ export default function HighlightsCard() {
                                               <button
                                                 type="button"
                                                 onClick={() => removeReleaseFromKeyHighlight(tgIdx, teamIdx, highlightIdx, relIdx)}
-                                                style={{ padding: '0.1rem 0.25rem', fontSize: '0.65rem', background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease, color 0.2s ease', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                style={{ padding: '0.2rem 0.4rem', fontSize: '0.65rem', background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                                 title="Delete release"
                                               >
                                                 <Trash2 size={14} />

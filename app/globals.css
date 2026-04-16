@@ -117,6 +117,10 @@ body.leadership-view .status-select {
   gap: 1.5rem;
 }
 
+.grid-span-2 {
+  grid-column: span 2;
+}
+
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -676,12 +680,17 @@ body.leadership-view .status-select {
   background-color: rgba(0, 200, 83, 0.08);
 }
 
-.highlight-item:hover .highlight-actions button {
-  opacity: 1;
+.highlight-actions button,
+.release-actions button {
+  opacity: 0 !important;
+  transition: opacity 0.2s ease !important;
+  pointer-events: none !important;
 }
 
+.highlight-item:hover .highlight-actions button,
 .highlight-item:hover .release-actions button {
-  opacity: 1;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .highlight-actions button:hover,
