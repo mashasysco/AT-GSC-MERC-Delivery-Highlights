@@ -818,28 +818,21 @@ When you make code changes, here's the workflow to deploy updates:
 
 ```bash
 # 1. Build the new image
-podman build \
-  --platform linux/amd64 \
-  -t 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:swms-analytics-latest \
-  -t 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:swms-analytics-v1.1.0 \
-  .
+podman build --platform linux/amd64  -t 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:delivery-highlights-latest -t 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:delivery-highlights-v1.3.0   .
 
 # 2. Re-authenticate with ECR (if token expired — tokens last 12 hours)
-aws ecr get-login-password --region us-east-1 |   podman login --username AWS --password-stdin   546397704060.dkr.ecr.us-east-1.amazonaws.com --profile DevOpsUser-546397704060
+aws ecr get-login-password --region us-east-1 --profile DevOpsUser-546397704060|   podman login --username AWS --password-stdin   546397704060.dkr.ecr.us-east-1.amazonaws.com 
 
 # 3. Push the new image
-podman push 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:swms-analytics-latest
-podman push 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:swms-analytics-v1.1.0
+podman push 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:delivery-highlights-latest
+podman push 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:delivery-highlights-v1.3.0
 
 # 4. Force ECS to pull the new image and do a rolling update
-aws ecs update-service   --cluster swms-rnd --service swms-analytics --force-new-deployment
+aws ecs update-service   --cluster swms-rnd --service swms-analytics --force-new-deployment --profile DevOpsUser-546397704060
 
 # 5. Watch the deployment roll out
-aws ecs describe-services \
-  --cluster swms-rnd \
-  --services swms-analytics \
-  --query 'services[0].deployments[*].{status:status,running:runningCount,desired:desiredCount,rollout:rolloutState}' \
-  --output table
+aws ecs describe-services   --cluster swms-rnd   --services delivery-highlights   --query 'services[0].deployments[*].{status:status,running:runningCount,desired:desiredCount,rollout:rolloutState}'   --output table --profile DevOpsUser-546397704060
+
 ```
 
 > **How rolling deployment works:**
