@@ -828,7 +828,7 @@ podman push 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:delivery-highl
 podman push 546397704060.dkr.ecr.us-east-1.amazonaws.com/swms-rnd:delivery-highlights-v1.3.0
 
 # 4. Force ECS to pull the new image and do a rolling update
-aws ecs update-service   --cluster swms-rnd --service swms-analytics --force-new-deployment --profile DevOpsUser-546397704060
+aws ecs update-service   --cluster swms-rnd --service delivery-highlights-service-zor0h1yb --force-new-deployment --profile DevOpsUser-546397704060
 
 # 5. Watch the deployment roll out
 aws ecs describe-services   --cluster swms-rnd   --services delivery-highlights   --query 'services[0].deployments[*].{status:status,running:runningCount,desired:desiredCount,rollout:rolloutState}'   --output table --profile DevOpsUser-546397704060
